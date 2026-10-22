@@ -1,0 +1,199 @@
+{
+  "version": "primary-v2",
+  "groups": [
+    {
+      "name": "电子 · 通信 · 计算机",
+      "industries": [
+        {
+          "name": "电子",
+          "color": "#184BD8"
+        },
+        {
+          "name": "通信",
+          "color": "#517AEC"
+        },
+        {
+          "name": "计算机",
+          "color": "#103393"
+        }
+      ]
+    },
+    {
+      "name": "银行 · 非银金融",
+      "industries": [
+        {
+          "name": "银行",
+          "color": "#592D9A"
+        },
+        {
+          "name": "非银金融",
+          "color": "#9C75D7"
+        }
+      ]
+    },
+    {
+      "name": "电力设备 · 机械设备 · 公用事业",
+      "industries": [
+        {
+          "name": "电力设备",
+          "color": "#DABB42"
+        },
+        {
+          "name": "机械设备",
+          "color": "#F2DD87"
+        },
+        {
+          "name": "公用事业",
+          "color": "#B9A13D"
+        }
+      ]
+    },
+    {
+      "name": "医药生物",
+      "industries": [
+        {
+          "name": "医药生物",
+          "color": "#D974A5"
+        }
+      ]
+    },
+    {
+      "name": "有色金属 · 钢铁",
+      "industries": [
+        {
+          "name": "有色金属",
+          "color": "#9A763B"
+        },
+        {
+          "name": "钢铁",
+          "color": "#C29955"
+        }
+      ]
+    },
+    {
+      "name": "基础化工 · 石油石化 · 煤炭",
+      "industries": [
+        {
+          "name": "基础化工",
+          "color": "#E88822"
+        },
+        {
+          "name": "石油石化",
+          "color": "#F4A340"
+        },
+        {
+          "name": "煤炭",
+          "color": "#CC6B16"
+        }
+      ]
+    },
+    {
+      "name": "汽车 · 交通运输",
+      "industries": [
+        {
+          "name": "汽车",
+          "color": "#1B7B98"
+        },
+        {
+          "name": "交通运输",
+          "color": "#2399BA"
+        }
+      ]
+    },
+    {
+      "name": "国防军工",
+      "industries": [
+        {
+          "name": "国防军工",
+          "color": "#3026C0"
+        }
+      ]
+    },
+    {
+      "name": "家用电器",
+      "industries": [
+        {
+          "name": "家用电器",
+          "color": "#E7A06A"
+        }
+      ]
+    },
+    {
+      "name": "农林牧渔 · 环保",
+      "industries": [
+        {
+          "name": "农林牧渔",
+          "color": "#987348"
+        },
+        {
+          "name": "环保",
+          "color": "#B99663"
+        }
+      ]
+    },
+    {
+      "name": "房地产 · 建筑材料 · 建筑装饰",
+      "industries": [
+        {
+          "name": "房地产",
+          "color": "#8C7A70"
+        },
+        {
+          "name": "建筑材料",
+          "color": "#AF9684"
+        },
+        {
+          "name": "建筑装饰",
+          "color": "#C8B3A1"
+        }
+      ]
+    },
+    {
+      "name": "商贸零售 · 社会服务 · 传媒 · 食品饮料",
+      "industries": [
+        {
+          "name": "商贸零售",
+          "color": "#C99A26"
+        },
+        {
+          "name": "社会服务",
+          "color": "#E9BE4A"
+        },
+        {
+          "name": "传媒",
+          "color": "#EFD779"
+        },
+        {
+          "name": "食品饮料",
+          "color": "#B88B32"
+        }
+      ]
+    },
+    {
+      "name": "纺织服饰 · 美容护理 · 轻工制造",
+      "industries": [
+        {
+          "name": "纺织服饰",
+          "color": "#AA507F"
+        },
+        {
+          "name": "美容护理",
+          "color": "#D378A6"
+        },
+        {
+          "name": "轻工制造",
+          "color": "#E8AACB"
+        }
+      ]
+    },
+    {
+      "name": "综合",
+      "industries": [
+        {
+          "name": "综合",
+          "color": "#717A84"
+        }
+      ]
+    }
+  ]
+}

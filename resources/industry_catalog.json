@@ -1,0 +1,794 @@
+{
+  "source_name": "大盘云图 A股全图",
+  "source_url": "https://dapanyuntu.com/api/heatmap/treemap?market=all&period=day",
+  "retrieved_date": "2026-10-21",
+  "source_updated_at": "2026-10-19T16:59:46+08:00",
+  "source_sha256": "7a3722e6cae749ef9080c3cf0a63a9150e2eee7e66825b486adbb5af3d2ceb12",
+  "source_board_count": 32,
+  "first_level_count": 31,
+  "second_level_count": 131,
+  "source_stock_count": 5566,
+  "classified_record_count": 5565,
+  "unclassified_records": [
+    {
+      "code": "600849.SH",
+      "name": "上药转换",
+      "first_level": "",
+      "second_level": ""
+    }
+  ],
+  "industries": [
+    {
+      "name": "电子",
+      "website_group_code": "0068e16a",
+      "stock_count": 530,
+      "second_level": [
+        {
+          "name": "消费电子",
+          "stock_count": 91
+        },
+        {
+          "name": "半导体",
+          "stock_count": 182
+        },
+        {
+          "name": "元件",
+          "stock_count": 95
+        },
+        {
+          "name": "光学光电子",
+          "stock_count": 93
+        },
+        {
+          "name": "其他电子Ⅱ",
+          "stock_count": 33
+        },
+        {
+          "name": "电子化学品Ⅱ",
+          "stock_count": 36
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "银行",
+      "website_group_code": "006d2647",
+      "stock_count": 42,
+      "second_level": [
+        {
+          "name": "国有大型银行Ⅱ",
+          "stock_count": 6
+        },
+        {
+          "name": "股份制银行Ⅱ",
+          "stock_count": 9
+        },
+        {
+          "name": "城商行Ⅱ",
+          "stock_count": 17
+        },
+        {
+          "name": "农商行Ⅱ",
+          "stock_count": 10
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "电力设备",
+      "website_group_code": "be14367a",
+      "stock_count": 406,
+      "second_level": [
+        {
+          "name": "电池",
+          "stock_count": 98
+        },
+        {
+          "name": "电网设备",
+          "stock_count": 153
+        },
+        {
+          "name": "光伏设备",
+          "stock_count": 67
+        },
+        {
+          "name": "其他电源设备Ⅱ",
+          "stock_count": 32
+        },
+        {
+          "name": "风电设备",
+          "stock_count": 30
+        },
+        {
+          "name": "电机Ⅱ",
+          "stock_count": 26
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "非银金融",
+      "website_group_code": "d1ead017",
+      "stock_count": 79,
+      "second_level": [
+        {
+          "name": "保险Ⅱ",
+          "stock_count": 5
+        },
+        {
+          "name": "证券Ⅱ",
+          "stock_count": 50
+        },
+        {
+          "name": "多元金融",
+          "stock_count": 24
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "医药生物",
+      "website_group_code": "ac3f8377",
+      "stock_count": 498,
+      "second_level": [
+        {
+          "name": "医疗服务",
+          "stock_count": 51
+        },
+        {
+          "name": "化学制药",
+          "stock_count": 168
+        },
+        {
+          "name": "医疗器械",
+          "stock_count": 130
+        },
+        {
+          "name": "中药Ⅱ",
+          "stock_count": 66
+        },
+        {
+          "name": "医药商业",
+          "stock_count": 32
+        },
+        {
+          "name": "生物制品",
+          "stock_count": 51
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "机械设备",
+      "website_group_code": "b6c795b4",
+      "stock_count": 643,
+      "second_level": [
+        {
+          "name": "工程机械",
+          "stock_count": 28
+        },
+        {
+          "name": "轨交设备Ⅱ",
+          "stock_count": 30
+        },
+        {
+          "name": "自动化设备",
+          "stock_count": 103
+        },
+        {
+          "name": "专用设备",
+          "stock_count": 222
+        },
+        {
+          "name": "通用设备",
+          "stock_count": 260
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "通信",
+      "website_group_code": "006c4d80",
+      "stock_count": 123,
+      "second_level": [
+        {
+          "name": "通信设备",
+          "stock_count": 85
+        },
+        {
+          "name": "通信服务",
+          "stock_count": 38
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "有色金属",
+      "website_group_code": "b71b152f",
+      "stock_count": 143,
+      "second_level": [
+        {
+          "name": "工业金属",
+          "stock_count": 61
+        },
+        {
+          "name": "小金属",
+          "stock_count": 28
+        },
+        {
+          "name": "贵金属",
+          "stock_count": 11
+        },
+        {
+          "name": "能源金属",
+          "stock_count": 11
+        },
+        {
+          "name": "金属新材料",
+          "stock_count": 32
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "基础化工",
+      "website_group_code": "aea5b93a",
+      "stock_count": 456,
+      "second_level": [
+        {
+          "name": "化学制品",
+          "stock_count": 195
+        },
+        {
+          "name": "化学原料",
+          "stock_count": 57
+        },
+        {
+          "name": "农化制品",
+          "stock_count": 59
+        },
+        {
+          "name": "塑料",
+          "stock_count": 93
+        },
+        {
+          "name": "化学纤维",
+          "stock_count": 27
+        },
+        {
+          "name": "非金属材料Ⅱ",
+          "stock_count": 8
+        },
+        {
+          "name": "橡胶",
+          "stock_count": 17
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "食品饮料",
+      "website_group_code": "d1ada5cc",
+      "stock_count": 128,
+      "second_level": [
+        {
+          "name": "白酒Ⅱ",
+          "stock_count": 19
+        },
+        {
+          "name": "调味发酵品Ⅱ",
+          "stock_count": 14
+        },
+        {
+          "name": "饮料乳品",
+          "stock_count": 27
+        },
+        {
+          "name": "食品加工",
+          "stock_count": 30
+        },
+        {
+          "name": "非白酒",
+          "stock_count": 16
+        },
+        {
+          "name": "休闲食品",
+          "stock_count": 22
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "计算机",
+      "website_group_code": "0de90077",
+      "stock_count": 357,
+      "second_level": [
+        {
+          "name": "计算机设备",
+          "stock_count": 82
+        },
+        {
+          "name": "软件开发",
+          "stock_count": 153
+        },
+        {
+          "name": "IT服务Ⅱ",
+          "stock_count": 122
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "公用事业",
+      "website_group_code": "aaffc69e",
+      "stock_count": 138,
+      "second_level": [
+        {
+          "name": "电力",
+          "stock_count": 109
+        },
+        {
+          "name": "燃气Ⅱ",
+          "stock_count": 29
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "石油石化",
+      "website_group_code": "c001aefa",
+      "stock_count": 49,
+      "second_level": [
+        {
+          "name": "炼化及贸易",
+          "stock_count": 30
+        },
+        {
+          "name": "油气开采Ⅱ",
+          "stock_count": 4
+        },
+        {
+          "name": "油服工程",
+          "stock_count": 15
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "汽车",
+      "website_group_code": "0067f5c8",
+      "stock_count": 316,
+      "second_level": [
+        {
+          "name": "乘用车",
+          "stock_count": 8
+        },
+        {
+          "name": "汽车零部件",
+          "stock_count": 269
+        },
+        {
+          "name": "商用车",
+          "stock_count": 13
+        },
+        {
+          "name": "摩托车及其他",
+          "stock_count": 17
+        },
+        {
+          "name": "汽车服务",
+          "stock_count": 9
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "交通运输",
+      "website_group_code": "a9f4a3a6",
+      "stock_count": 128,
+      "second_level": [
+        {
+          "name": "铁路公路",
+          "stock_count": 33
+        },
+        {
+          "name": "航运港口",
+          "stock_count": 35
+        },
+        {
+          "name": "物流",
+          "stock_count": 48
+        },
+        {
+          "name": "航空机场",
+          "stock_count": 12
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "国防军工",
+      "website_group_code": "ae9a2ef4",
+      "stock_count": 141,
+      "second_level": [
+        {
+          "name": "航海装备Ⅱ",
+          "stock_count": 10
+        },
+        {
+          "name": "航空装备Ⅱ",
+          "stock_count": 50
+        },
+        {
+          "name": "航天装备Ⅱ",
+          "stock_count": 9
+        },
+        {
+          "name": "军工电子Ⅱ",
+          "stock_count": 60
+        },
+        {
+          "name": "地面兵装Ⅱ",
+          "stock_count": 12
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "煤炭",
+      "website_group_code": "006878d6",
+      "stock_count": 33,
+      "second_level": [
+        {
+          "name": "煤炭开采",
+          "stock_count": 26
+        },
+        {
+          "name": "焦炭Ⅱ",
+          "stock_count": 7
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "家用电器",
+      "website_group_code": "b0a928e0",
+      "stock_count": 94,
+      "second_level": [
+        {
+          "name": "白色家电",
+          "stock_count": 11
+        },
+        {
+          "name": "家电零部件Ⅱ",
+          "stock_count": 29
+        },
+        {
+          "name": "黑色家电",
+          "stock_count": 9
+        },
+        {
+          "name": "小家电",
+          "stock_count": 21
+        },
+        {
+          "name": "厨卫电器",
+          "stock_count": 9
+        },
+        {
+          "name": "照明设备Ⅱ",
+          "stock_count": 12
+        },
+        {
+          "name": "其他家电Ⅱ",
+          "stock_count": 3
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "建筑装饰",
+      "website_group_code": "b29092a5",
+      "stock_count": 148,
+      "second_level": [
+        {
+          "name": "房屋建设Ⅱ",
+          "stock_count": 8
+        },
+        {
+          "name": "基础建设",
+          "stock_count": 41
+        },
+        {
+          "name": "专业工程",
+          "stock_count": 37
+        },
+        {
+          "name": "工程咨询服务Ⅱ",
+          "stock_count": 40
+        },
+        {
+          "name": "装修装饰Ⅱ",
+          "stock_count": 22
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "传媒",
+      "website_group_code": "0063f7f7",
+      "stock_count": 130,
+      "second_level": [
+        {
+          "name": "游戏Ⅱ",
+          "stock_count": 26
+        },
+        {
+          "name": "广告营销",
+          "stock_count": 28
+        },
+        {
+          "name": "影视院线",
+          "stock_count": 19
+        },
+        {
+          "name": "电视广播Ⅱ",
+          "stock_count": 14
+        },
+        {
+          "name": "出版",
+          "stock_count": 29
+        },
+        {
+          "name": "数字媒体",
+          "stock_count": 14
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "农林牧渔",
+      "website_group_code": "aae52253",
+      "stock_count": 111,
+      "second_level": [
+        {
+          "name": "养殖业",
+          "stock_count": 23
+        },
+        {
+          "name": "饲料",
+          "stock_count": 18
+        },
+        {
+          "name": "农产品加工",
+          "stock_count": 27
+        },
+        {
+          "name": "种植业",
+          "stock_count": 21
+        },
+        {
+          "name": "林业Ⅱ",
+          "stock_count": 4
+        },
+        {
+          "name": "动物保健Ⅱ",
+          "stock_count": 9
+        },
+        {
+          "name": "农业综合Ⅱ",
+          "stock_count": 3
+        },
+        {
+          "name": "渔业",
+          "stock_count": 6
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "建筑材料",
+      "website_group_code": "b28c0eb9",
+      "stock_count": 84,
+      "second_level": [
+        {
+          "name": "玻璃玻纤",
+          "stock_count": 16
+        },
+        {
+          "name": "水泥",
+          "stock_count": 21
+        },
+        {
+          "name": "装修建材",
+          "stock_count": 47
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "房地产",
+      "website_group_code": "0d342cbb",
+      "stock_count": 95,
+      "second_level": [
+        {
+          "name": "房地产开发",
+          "stock_count": 83
+        },
+        {
+          "name": "房地产服务",
+          "stock_count": 12
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "商贸零售",
+      "website_group_code": "ad8c2d27",
+      "stock_count": 102,
+      "second_level": [
+        {
+          "name": "旅游零售Ⅱ",
+          "stock_count": 2
+        },
+        {
+          "name": "一般零售",
+          "stock_count": 61
+        },
+        {
+          "name": "贸易Ⅱ",
+          "stock_count": 13
+        },
+        {
+          "name": "互联网电商",
+          "stock_count": 19
+        },
+        {
+          "name": "专业连锁Ⅱ",
+          "stock_count": 7
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "轻工制造",
+      "website_group_code": "cca5455b",
+      "stock_count": 163,
+      "second_level": [
+        {
+          "name": "家居用品",
+          "stock_count": 76
+        },
+        {
+          "name": "造纸",
+          "stock_count": 25
+        },
+        {
+          "name": "包装印刷",
+          "stock_count": 42
+        },
+        {
+          "name": "文娱用品",
+          "stock_count": 20
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "钢铁",
+      "website_group_code": "006d27e8",
+      "stock_count": 44,
+      "second_level": [
+        {
+          "name": "普钢",
+          "stock_count": 22
+        },
+        {
+          "name": "特钢Ⅱ",
+          "stock_count": 12
+        },
+        {
+          "name": "冶钢原料",
+          "stock_count": 10
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "环保",
+      "website_group_code": "0068a3b1",
+      "stock_count": 132,
+      "second_level": [
+        {
+          "name": "环境治理",
+          "stock_count": 106
+        },
+        {
+          "name": "环保设备Ⅱ",
+          "stock_count": 26
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "纺织服饰",
+      "website_group_code": "c403faa3",
+      "stock_count": 108,
+      "second_level": [
+        {
+          "name": "纺织制造",
+          "stock_count": 34
+        },
+        {
+          "name": "服装家纺",
+          "stock_count": 59
+        },
+        {
+          "name": "饰品",
+          "stock_count": 15
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "社会服务",
+      "website_group_code": "c03700eb",
+      "stock_count": 94,
+      "second_level": [
+        {
+          "name": "专业服务",
+          "stock_count": 41
+        },
+        {
+          "name": "酒店餐饮",
+          "stock_count": 9
+        },
+        {
+          "name": "旅游及景区",
+          "stock_count": 25
+        },
+        {
+          "name": "教育",
+          "stock_count": 17
+        },
+        {
+          "name": "体育Ⅱ",
+          "stock_count": 2
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "美容护理",
+      "website_group_code": "c3e26576",
+      "stock_count": 30,
+      "second_level": [
+        {
+          "name": "化妆品",
+          "stock_count": 15
+        },
+        {
+          "name": "医疗美容",
+          "stock_count": 3
+        },
+        {
+          "name": "个护用品",
+          "stock_count": 12
+        }
+      ],
+      "planned_base_color": null
+    },
+    {
+      "name": "综合",
+      "website_group_code": "006a1cc9",
+      "stock_count": 20,
+      "second_level": [
+        {
+          "name": "综合Ⅱ",
+          "stock_count": 20
+        }
+      ],
+      "planned_base_color": null
+    }
+  ]
+}

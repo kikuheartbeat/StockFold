@@ -1,0 +1,43 @@
+__pycache__/
+*.pyc
+data/
+backups/
+tmp/
+.runtime/
+~$*.xlsx
+
+# Personal account data and exports
+/资料/
+/exports/
+*.sqlite
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-*
+*.xlsx
+*.xls
+*.csv
+*.tsv
+*.pdf
+*.log
+
+# Local reports, real-account screenshots, and internal working notes
+/docs/2026-10-22-*
+/docs/previews/
+/docs/superpowers/
+/docs/2026-10-21-一级行业配色更新记录.md
+/股票收益复盘程序_开发文档.md
+
+# Credentials and local tools
+.env
+.env.*
+!.env.example
+.codex/
+.agents/
+.aws/
+.ssh/
+.venv/
+venv/
+node_modules/
+.DS_Store
+Thumbs.db

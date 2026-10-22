@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1190" viewBox="0 0 1200 1190">
+<rect width="1200" height="1190" fill="#F5F7FC"/>
+<style>text{font-family:"Segoe UI","Microsoft YaHei",sans-serif;fill:#3B405B}.title{font-size:27px;font-weight:700}.note{font-size:13px;fill:#7C839B}.group{font-size:14px;font-weight:600}.label{font-size:14px}.hex{font-size:13px;fill:#737B95;font-family:Consolas,monospace}</style>
+<text x="38" y="49" class="title">StockFold · 一级行业 31 色方案</text>
+<text x="38" y="78" class="note">鹅黄 · 粉色 · 亮橙增补版 / 14 个关联组 · 一级行业配色 · 二级分类与所属股票统一继承 · 避开红、绿、黑</text>
+<rect x="38" y="105" width="550" height="133" rx="15" fill="white" stroke="#E9ECF5"/>
+<text x="55" y="131" class="group">电子 · 通信 · 计算机</text>
+<rect x="56" y="139" width="17" height="17" rx="4" fill="#184BD8"/><text x="85" y="152" class="label">电子</text><text x="256" y="152" class="hex">#184BD8</text><path d="M390 147h165" stroke="#184BD8" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="56" y="159" width="17" height="17" rx="4" fill="#517AEC"/><text x="85" y="172" class="label">通信</text><text x="256" y="172" class="hex">#517AEC</text><path d="M390 167h165" stroke="#517AEC" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="56" y="179" width="17" height="17" rx="4" fill="#103393"/><text x="85" y="192" class="label">计算机</text><text x="256" y="192" class="hex">#103393</text><path d="M390 187h165" stroke="#103393" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="612" y="105" width="550" height="133" rx="15" fill="white" stroke="#E9ECF5"/>
+<text x="629" y="131" class="group">银行 · 非银金融</text>
+<rect x="630" y="139" width="17" height="17" rx="4" fill="#592D9A"/><text x="659" y="152" class="label">银行</text><text x="830" y="152" class="hex">#592D9A</text><path d="M964 147h165" stroke="#592D9A" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="630" y="159" width="17" height="17" rx="4" fill="#9C75D7"/><text x="659" y="172" class="label">非银金融</text><text x="830" y="172" class="hex">#9C75D7</text><path d="M964 167h165" stroke="#9C75D7" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="38" y="250" width="550" height="133" rx="15" fill="white" stroke="#E9ECF5"/>
+<text x="55" y="276" class="group">电力设备 · 机械设备 · 公用事业</text>
+<rect x="56" y="284" width="17" height="17" rx="4" fill="#DABB42"/><text x="85" y="297" class="label">电力设备</text><text x="256" y="297" class="hex">#DABB42</text><path d="M390 292h165" stroke="#DABB42" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="56" y="304" width="17" height="17" rx="4" fill="#F2DD87"/><text x="85" y="317" class="label">机械设备</text><text x="256" y="317" class="hex">#F2DD87</text><path d="M390 312h165" stroke="#F2DD87" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="56" y="324" width="17" height="17" rx="4" fill="#B9A13D"/><text x="85" y="337" class="label">公用事业</text><text x="256" y="337" class="hex">#B9A13D</text><path d="M390 332h165" stroke="#B9A13D" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="612" y="250" width="550" height="133" rx="15" fill="white" stroke="#E9ECF5"/>
+<text x="629" y="276" class="group">医药生物</text>
+<rect x="630" y="284" width="17" height="17" rx="4" fill="#D974A5"/><text x="659" y="297" class="label">医药生物</text><text x="830" y="297" class="hex">#D974A5</text><path d="M964 292h165" stroke="#D974A5" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="38" y="395" width="550" height="133" rx="15" fill="white" stroke="#E9ECF5"/>
+<text x="55" y="421" class="group">有色金属 · 钢铁</text>
+<rect x="56" y="429" width="17" height="17" rx="4" fill="#9A763B"/><text x="85" y="442" class="label">有色金属</text><text x="256" y="442" class="hex">#9A763B</text><path d="M390 437h165" stroke="#9A763B" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="56" y="449" width="17" height="17" rx="4" fill="#C29955"/><text x="85" y="462" class="label">钢铁</text><text x="256" y="462" class="hex">#C29955</text><path d="M390 457h165" stroke="#C29955" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="612" y="395" width="550" height="133" rx="15" fill="white" stroke="#E9ECF5"/>
+<text x="629" y="421" class="group">基础化工 · 石油石化 · 煤炭</text>
+<rect x="630" y="429" width="17" height="17" rx="4" fill="#E88822"/><text x="659" y="442" class="label">基础化工</text><text x="830" y="442" class="hex">#E88822</text><path d="M964 437h165" stroke="#E88822" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="630" y="449" width="17" height="17" rx="4" fill="#F4A340"/><text x="659" y="462" class="label">石油石化</text><text x="830" y="462" class="hex">#F4A340</text><path d="M964 457h165" stroke="#F4A340" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="630" y="469" width="17" height="17" rx="4" fill="#CC6B16"/><text x="659" y="482" class="label">煤炭</text><text x="830" y="482" class="hex">#CC6B16</text><path d="M964 477h165" stroke="#CC6B16" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="38" y="540" width="550" height="133" rx="15" fill="white" stroke="#E9ECF5"/>
+<text x="55" y="566" class="group">汽车 · 交通运输</text>
+<rect x="56" y="574" width="17" height="17" rx="4" fill="#1B7B98"/><text x="85" y="587" class="label">汽车</text><text x="256" y="587" class="hex">#1B7B98</text><path d="M390 582h165" stroke="#1B7B98" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="56" y="594" width="17" height="17" rx="4" fill="#2399BA"/><text x="85" y="607" class="label">交通运输</text><text x="256" y="607" class="hex">#2399BA</text><path d="M390 602h165" stroke="#2399BA" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="612" y="540" width="550" height="133" rx="15" fill="white" stroke="#E9ECF5"/>
+<text x="629" y="566" class="group">国防军工</text>
+<rect x="630" y="574" width="17" height="17" rx="4" fill="#3026C0"/><text x="659" y="587" class="label">国防军工</text><text x="830" y="587" class="hex">#3026C0</text><path d="M964 582h165" stroke="#3026C0" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="38" y="685" width="550" height="133" rx="15" fill="white" stroke="#E9ECF5"/>
+<text x="55" y="711" class="group">家用电器</text>
+<rect x="56" y="719" width="17" height="17" rx="4" fill="#E7A06A"/><text x="85" y="732" class="label">家用电器</text><text x="256" y="732" class="hex">#E7A06A</text><path d="M390 727h165" stroke="#E7A06A" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="612" y="685" width="550" height="133" rx="15" fill="white" stroke="#E9ECF5"/>
+<text x="629" y="711" class="group">农林牧渔 · 环保</text>
+<rect x="630" y="719" width="17" height="17" rx="4" fill="#987348"/><text x="659" y="732" class="label">农林牧渔</text><text x="830" y="732" class="hex">#987348</text><path d="M964 727h165" stroke="#987348" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="630" y="739" width="17" height="17" rx="4" fill="#B99663"/><text x="659" y="752" class="label">环保</text><text x="830" y="752" class="hex">#B99663</text><path d="M964 747h165" stroke="#B99663" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="38" y="830" width="550" height="133" rx="15" fill="white" stroke="#E9ECF5"/>
+<text x="55" y="856" class="group">房地产 · 建筑材料 · 建筑装饰</text>
+<rect x="56" y="864" width="17" height="17" rx="4" fill="#8C7A70"/><text x="85" y="877" class="label">房地产</text><text x="256" y="877" class="hex">#8C7A70</text><path d="M390 872h165" stroke="#8C7A70" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="56" y="884" width="17" height="17" rx="4" fill="#AF9684"/><text x="85" y="897" class="label">建筑材料</text><text x="256" y="897" class="hex">#AF9684</text><path d="M390 892h165" stroke="#AF9684" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="56" y="904" width="17" height="17" rx="4" fill="#C8B3A1"/><text x="85" y="917" class="label">建筑装饰</text><text x="256" y="917" class="hex">#C8B3A1</text><path d="M390 912h165" stroke="#C8B3A1" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="612" y="830" width="550" height="133" rx="15" fill="white" stroke="#E9ECF5"/>
+<text x="629" y="856" class="group">商贸零售 · 社会服务 · 传媒 · 食品饮料</text>
+<rect x="630" y="864" width="17" height="17" rx="4" fill="#C99A26"/><text x="659" y="877" class="label">商贸零售</text><text x="830" y="877" class="hex">#C99A26</text><path d="M964 872h165" stroke="#C99A26" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="630" y="884" width="17" height="17" rx="4" fill="#E9BE4A"/><text x="659" y="897" class="label">社会服务</text><text x="830" y="897" class="hex">#E9BE4A</text><path d="M964 892h165" stroke="#E9BE4A" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="630" y="904" width="17" height="17" rx="4" fill="#EFD779"/><text x="659" y="917" class="label">传媒</text><text x="830" y="917" class="hex">#EFD779</text><path d="M964 912h165" stroke="#EFD779" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="630" y="924" width="17" height="17" rx="4" fill="#B88B32"/><text x="659" y="937" class="label">食品饮料</text><text x="830" y="937" class="hex">#B88B32</text><path d="M964 932h165" stroke="#B88B32" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="38" y="975" width="550" height="133" rx="15" fill="white" stroke="#E9ECF5"/>
+<text x="55" y="1001" class="group">纺织服饰 · 美容护理 · 轻工制造</text>
+<rect x="56" y="1009" width="17" height="17" rx="4" fill="#AA507F"/><text x="85" y="1022" class="label">纺织服饰</text><text x="256" y="1022" class="hex">#AA507F</text><path d="M390 1017h165" stroke="#AA507F" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="56" y="1029" width="17" height="17" rx="4" fill="#D378A6"/><text x="85" y="1042" class="label">美容护理</text><text x="256" y="1042" class="hex">#D378A6</text><path d="M390 1037h165" stroke="#D378A6" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="56" y="1049" width="17" height="17" rx="4" fill="#E8AACB"/><text x="85" y="1062" class="label">轻工制造</text><text x="256" y="1062" class="hex">#E8AACB</text><path d="M390 1057h165" stroke="#E8AACB" stroke-width="2.4" stroke-dasharray="7 5"/>
+<rect x="612" y="975" width="550" height="133" rx="15" fill="white" stroke="#E9ECF5"/>
+<text x="629" y="1001" class="group">综合</text>
+<rect x="630" y="1009" width="17" height="17" rx="4" fill="#717A84"/><text x="659" y="1022" class="label">综合</text><text x="830" y="1022" class="hex">#717A84</text><path d="M964 1017h165" stroke="#717A84" stroke-width="2.4" stroke-dasharray="7 5"/>
+<text x="38" y="1158" class="note">初始配色可在程序内调整；相近组通过明暗与饱和度区分。石油化工对应现有行业名称“石油石化”。</text>
+</svg>

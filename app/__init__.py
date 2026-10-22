@@ -1,0 +1,1 @@
+"""StockFold — local investment journal."""
