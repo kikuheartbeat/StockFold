@@ -1,5 +1,6 @@
 import {api,fileBase64,download} from './api.js';
 import {$,$$,esc,money,parseMoney,icon,modal,toast,busy,confirmDialog} from './ui.js';
+import {createStockLookup,stockLabel} from './stock-search.js';
 
 export function createEditors(ctx){
   const stockOptions=(selected='',empty=true)=>`${empty?'<option value="">选择股票 / ETF</option>':''}${ctx.state.stocks.map(s=>`<option value="${s.id}" ${Number(selected)===s.id?'selected':''}>${esc(s.code)} · ${esc(s.name)}${s.asset_type==='etf'?' · ETF':''}</option>`).join('')}`;
@@ -20,27 +21,47 @@ export function createEditors(ctx){
       <div class="form-section"><div class="form-section-heading"><h3>收盘账户快照</h3><small>可暂时留空，后续补录</small></div><div class="form-grid">${field('账户总资产（元）','total',amountValue(account.total_assets_cents),'text','inputmode="decimal" placeholder="股票市值 + 账户现金"')}${field('现金余额（元）','cash',amountValue(account.cash_cents),'text','inputmode="decimal" placeholder="券商显示的现金余额"')}${field('账户其他收益（元）','other',amountValue(account.other_pnl_cents??0),'text','inputmode="decimal"')}${field('备注','note',data.note||'','text','placeholder="给今天留一条复盘笔记"')}</div><small class="muted" style="font-size:10px;display:block;margin-top:10px">其他收益用于单列利息等；若已包含在个股收益中，请勿重复填写。</small></div>
       <div class="form-section"><div class="form-section-heading"><h3>当天交易与转账 <small>${data.ledger.length} 笔</small></h3><button class="btn-text" id="day-add-ledger">${icon('plus')}记买卖 / 转账</button></div><div id="day-ledger-summary">${data.ledger.length?data.ledger.slice(0,6).map(l=>`<div class="tooltip-row"><span>${esc(l.summary)} ${esc(l.name||'')}</span><b>${money(l.cash_change_cents,{sign:true})} 元</b></div>`).join(''):'<small class="muted">没有交易也可以记录持仓收益。</small>'}</div></div>
       <div class="form-error"></div><div class="modal-actions"><button class="btn btn-quiet" id="day-cancel">取消</button><button class="btn btn-primary" id="save-day">${icon('check')}保存记录</button></div>`,{drawer:true,subtitle:'每天几分钟，留下可追溯的投资记录'});
+    const lookup=createStockLookup(ctx.state.stocks,ctx.state.sectors);
+    let rowSequence=0;
     const append=(r={stock_id:'',pnl_cents:null})=>{
-      const row=document.createElement('div');row.className='return-row';row.innerHTML=`<select aria-label="选择股票">${stockOptions(r.stock_id)}</select><input aria-label="当日收益金额" type="text" inputmode="decimal" placeholder="盈亏金额" value="${esc(amountValue(r.pnl_cents))}"><button class="icon-btn" aria-label="移除这条收益">${icon('close')}</button>`;
-      $('button',row).onclick=()=>row.remove();$('#return-rows',m.root).append(row);
+      const stock=ctx.state.stocks.find(s=>s.id===r.stock_id),listId=`day-stock-options-${++rowSequence}`;
+      const row=document.createElement('div');row.className='return-entry';row.innerHTML=`<div class="return-row"><input class="return-stock" aria-label="股票名称或代码" role="combobox" aria-autocomplete="list" list="${listId}" autocomplete="off" placeholder="输入股票名称或代码" value="${esc(stock?stockLabel(stock):'')}"><input class="return-pnl" aria-label="当日收益金额" type="text" inputmode="decimal" placeholder="盈亏金额" value="${esc(amountValue(r.pnl_cents))}"><button class="icon-btn remove-return" aria-label="移除这条收益">${icon('close')}</button></div><datalist id="${listId}"></datalist><details class="manual-stock"><summary>未找到证券？手动录入</summary><div class="form-grid"><div class="field"><label>证券代码<input class="manual-code" aria-label="手动证券代码" placeholder="例如 002281" maxlength="20"></label></div><div class="field"><label>证券名称<input class="manual-name" aria-label="手动证券名称" placeholder="填写完整名称" maxlength="80"></label></div><div class="field"><label>市场<select class="manual-market" aria-label="手动证券市场"><option value="">按代码自动识别</option>${['SZ','SH','BJ','OTC'].map(v=>`<option>${v}</option>`).join('')}</select></label></div><div class="field"><label>证券类型<select class="manual-type" aria-label="手动证券类型"><option value="stock">股票</option><option value="etf">ETF</option><option value="product">资管产品</option></select></label></div></div></details>`;
+      const input=$('.return-stock',row),list=$('datalist',row),manual=$('details',row);
+      const renderOptions=results=>{list.innerHTML=results.slice(0,25).map(s=>`<option value="${esc(stockLabel(s))}"></option>`).join('');};
+      renderOptions(ctx.state.stocks);
+      let timer,revision=0;
+      const search=()=>{
+        const current=++revision;clearTimeout(timer);
+        timer=setTimeout(async()=>{const results=await lookup.search(input.value);if(current===revision&&row.isConnected)renderOptions(results);},200);
+      };
+      input.oninput=()=>{manual.open=false;$('.manual-code',row).value='';$('.manual-name',row).value='';$('.manual-market',row).value='';$('.manual-type',row).value='stock';search();};input.onfocus=search;
+      manual.ontoggle=()=>{if(manual.open){const q=input.value.trim();if(/^[0-9A-Za-z._-]+$/.test(q)){$('.manual-code',row).value||=q;}else if(q&&!q.includes(' · ')){$('.manual-name',row).value||=q;}}};
+      $('.remove-return',row).onclick=()=>{clearTimeout(timer);revision++;row.remove();};$('#return-rows',m.root).append(row);
     };
     initial.forEach(append);$('#add-return',m.root).onclick=()=>append();$('#day-cancel',m.root).onclick=m.close;
-    const collect=()=>{
-      const records=[],expected=[];
-      for(const row of $$('.return-row',m.root)){
-        const sid=Number($('select',row).value),value=$('input',row).value.trim();
-        if(!sid&&value)throw new Error('请先为收益选择股票');
-        if(sid){expected.push(sid);if(value)records.push({stock_id:sid,pnl_cents:parseMoney(value)});}
+    const collect=async(forceStatus=null)=>{
+      const records=[],expected=[],pending=[],seen=new Set();
+      const status=forceStatus||$('#day-status',m.root).value;
+      const account={total_assets_cents:parseMoney($('#f-total',m.root).value,true),cash_cents:parseMoney($('#f-cash',m.root).value,true),other_pnl_cents:parseMoney($('#f-other',m.root).value||'0')};
+      for(const row of $$('.return-entry',m.root)){
+        const query=$('.return-stock',row).value.trim(),value=$('.return-pnl',row).value.trim();
+        const details=$('details',row),manual=details.open?{code:$('.manual-code',row).value,name:$('.manual-name',row).value,market:$('.manual-market',row).value,asset_type:$('.manual-type',row).value}:null;
+        if(!query&&!manual?.code&&!manual?.name){if(value)throw new Error('请先为收益输入股票名称或代码');continue;}
+        const pnl=value?parseMoney(value):null;
+        if(status==='confirmed'&&pnl===null)throw new Error('请补齐应录股票收益，包括明确为零的记录');
+        let stock;try{stock=await lookup.resolve(query,manual);}catch(error){if(error.message.includes('名称和代码'))details.open=true;$('.return-stock',row).focus();throw error;}
+        const key=stock.market+'|'+stock.code;
+        if(seen.has(key))throw new Error('同一天同一股票只能有一条收益');
+        seen.add(key);pending.push({stock,pnl});
       }
-      const status=$('#day-status',m.root).value;
+      for(const item of pending){const stock=await lookup.save(item.stock);expected.push(stock.id);if(item.pnl!==null)records.push({stock_id:stock.id,pnl_cents:item.pnl});}
       if(status!=='skip')for(const l of data.ledger)if(['buy','sell'].includes(l.kind)&&l.stock_id&&!expected.includes(l.stock_id))expected.push(l.stock_id);
-      return {returns:records,expected_stock_ids:expected,status,note:$('#f-note',m.root).value,
-        account:{total_assets_cents:parseMoney($('#f-total',m.root).value,true),cash_cents:parseMoney($('#f-cash',m.root).value,true),other_pnl_cents:parseMoney($('#f-other',m.root).value||'0')}};
+      return {returns:records,expected_stock_ids:expected,status,note:$('#f-note',m.root).value,account};
     };
     $('#f-date',m.root).onchange=()=>{const next=$('#f-date',m.root).value;if(next){m.close();dayEditor(next);}};
-    $('#save-day',m.root).onclick=async e=>{try{await busy(e.currentTarget,async()=>{await api(`/api/days/${$('#f-date',m.root).value}`,{method:'PUT',body:collect()});});m.close();toast('记录已保存，图表已更新');await ctx.refresh();}catch(err){showError(m.root,err);}};
+    $('#save-day',m.root).onclick=async e=>{try{await busy(e.currentTarget,async()=>{const payload=await collect();await api(`/api/days/${$('#f-date',m.root).value}`,{method:'PUT',body:payload});});m.close();toast('记录已保存，图表已更新');await ctx.refresh();}catch(err){showError(m.root,err);}};
     $('#day-add-ledger',m.root).onclick=async()=>{
-      try{const p=collect();p.status='draft';await api(`/api/days/${date}`,{method:'PUT',body:p});m.close();toast('收益和资产已暂存为草稿');await ledgerEditor(null,date,()=>dayEditor(date));}
+      try{await busy($('#day-add-ledger',m.root),async()=>{const p=await collect('draft');await api(`/api/days/${date}`,{method:'PUT',body:p});});m.close();toast('收益和资产已暂存为草稿');await ledgerEditor(null,date,()=>dayEditor(date));}
       catch(err){showError(m.root,err);}
     };
   }
