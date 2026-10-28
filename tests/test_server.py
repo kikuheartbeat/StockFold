@@ -29,6 +29,27 @@ class ServerTest(DatabaseFixture):
         r=c.getresponse();body=r.read();status=r.status;typ=r.getheader('Content-Type','');c.close()
         return status,json.loads(body) if 'application/json' in typ else body
 
+    def test_stock_history_sync_only_changes_prices_and_provides_calendar(self):
+        _,stock=self.call('POST','/api/stocks',{'code':'600118','name':'中国卫星','market':'SH'})
+        self.call('POST','/api/ledger',{'date':'2026-01-06','kind':'buy','stock_id':stock['id'],'quantity':100,'price_decimal':'10'})
+        self.call('PUT','/api/days/2026-01-06',{'returns':[{'stock_id':stock['id'],'pnl_cents':123}], 'status':'confirmed'})
+        calls=[]
+        def fetch(stock,start,end):
+            calls.append(stock['code'])
+            return [{'date':day,'close_decimal':'10.25','source':'test'} for day in ['2026-01-05','2026-01-06','2026-01-09','2026-01-12'] if start<=day<=end]
+        self.server.market_fetcher=fetch
+        query=f'/api/stock-history?stock_id={stock["id"]}&start=2026-01-05&end=2026-01-12'
+        self.assertEqual(self.call('GET',query)[0],200)
+        self.assertEqual(calls,[])
+        status,data=self.call('POST','/api/stock-history/sync',{'stock_id':stock['id'],'start':'2026-01-05','end':'2026-01-12'})
+        self.assertEqual(status,200,data)
+        self.assertEqual(data['points'][0]['close'],10.25)
+        self.assertTrue(data['points'][5]['closed'])
+        self.assertEqual(data['intervals'],[{'start':'2026-01-06','end':None}])
+        self.assertEqual(self.call('GET','/api/days/2026-01-06')[1]['returns'][0]['pnl_cents'],123)
+        self.assertEqual(self.call('GET',query)[1]['points'],data['points'])
+        self.assertEqual(self.call('GET','/api/stock-history?stock_id=999&start=2026-01-05&end=2026-01-12')[0],400)
+
     def test_foreign_origin_and_missing_token_rejected(self):
         status,_=self.call('POST','/api/backup',{}, {'Origin':'https://evil.example'})
         self.assertEqual(status,403)

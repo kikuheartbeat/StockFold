@@ -4,10 +4,12 @@ import {renderCharts} from './charts.js';
 import {makeDemo} from './demo.js';
 import {createEditors} from './editors.js';
 import {createReconstruction} from './reconstruction.js';
+import {loadPriceHistory} from './price-history-loader.js';
 
 const state={page:'overview',demo:false,stocks:[],sectors:[],settings:{},today:'',dashboard:null,
   start:null,end:null,range:90,industryLevel:2,
   ledger:[],pageIndex:0,search:'',kind:'',industryTab:'stocks',selectedParent:null,chartCleanup:null};
+let priceStockId=0,priceHistory=null,priceRequest=0;
 const pages={overview:['投资总览','grid'],daily:['每日记录','pen'],history:['历史补录','clock'],ledger:['交易流水','list'],industry:['股票与行业','layers'],data:['数据管理','database']};
 const ctx={state,refresh:()=>refresh(),navigate:page=>navigate(page)};
 const editors=createEditors(ctx);
@@ -20,9 +22,11 @@ async function refresh(){
   try{await bootstrap();await loadPage();}catch(error){toast(error.message,'error');}
 }
 async function loadPage(){
+  priceRequest++;priceHistory=null;
   if(state.page==='overview'||state.page==='daily'||state.page==='history'){
     const q=new URLSearchParams({industry_level:state.industryLevel});if(state.start)q.set('start',state.start);if(state.end)q.set('end',state.end);
     state.dashboard=state.demo?makeDemo(state.today,state.industryLevel,state.start,state.end,state.sectors):await api('/api/dashboard?'+q);
+    if(!state.dashboard.history_candidates?.some(s=>s.id===priceStockId))priceStockId=0;
   }
   if(state.page==='history')state.autoMeta=await api('/api/reconstruction/meta');
   if(state.page==='ledger')state.ledger=await api('/api/ledger');
@@ -85,9 +89,41 @@ function bindFilters(){
   const change=async()=>{const a=$('#range-start').value,b=$('#range-end').value;if(!a||!b)return;if(a>b){toast('结束日期不能早于开始日期','error');return;}state.start=a;state.end=b;state.range=-1;try{await loadPage();}catch(e){toast(e.message,'error');}};
   $('#range-start').onchange=change;$('#range-end').onchange=change;
 }
-function drawOnly(){state.chartCleanup?.();state.chartCleanup=renderCharts($('#page-body'),state.dashboard,{onEmpty:()=>navigate('history')});}
+function drawOnly(){state.chartCleanup?.();state.chartCleanup=renderCharts($('#page-body'),state.dashboard,{onEmpty:()=>navigate('history'),priceHistory});}
+async function loadPrice(sync=false){
+  const request=++priceRequest,sid=priceStockId,d=state.dashboard;
+  const status=$('#price-status'),update=$('#price-sync');
+  priceHistory=null;drawOnly();
+  update.disabled=!sid||state.demo;
+  if(!sid){status.textContent='选择曾经持有的股票，查看股价与账户收益对照。';return;}
+  status.textContent=sync?'正在更新该股行情…':'正在读取本地行情…';update.disabled=true;
+  try{
+    const payload={stock_id:sid,start:d.metadata.start,end:d.metadata.end};
+    const isCurrent=()=>request===priceRequest&&state.page==='overview';
+    const result=state.demo?{data:d.price_histories[sid]}:await loadPriceHistory(api,payload,{
+      force:sync,isCurrent,
+      onCached:data=>{priceHistory=data;drawOnly();},
+      onSyncing:()=>{status.textContent='正在补齐整个所选区间的行情（包括买入前、清仓后）…';}
+    });
+    if(!result)return;
+    const {data,warning}=result;
+    if(request!==priceRequest||state.page!=='overview')return;
+    priceHistory=data;drawOnly();
+    const count=data.points.filter(p=>p.close!=null).length;
+    status.textContent=`${state.demo?'示例行情 · ':''}不复权日收盘价 · ${count} 条价格 · 粗线为持有期间，虚线标记持仓边界 · 区间盈利淡红、亏损淡绿，收益曲线下方不填色${data.uncertain?' · 持仓依据待核对':''}${count?'':' · 点击“更新该股行情”获取价格'}。`;
+    if(warning)status.textContent+=` 全区间行情暂未补齐：${warning}。已保留缓存走势，可点击“更新该股行情”重试。`;
+  }catch(error){if(request===priceRequest&&state.page==='overview')status.textContent=error.message;}
+  finally{if(request===priceRequest&&state.page==='overview')update.disabled=state.demo;}
+}
 function bindOverview(){
-  bindFilters();drawOnly();
+  bindFilters();
+  const chart=$('#portfolio-chart'),controls=document.createElement('div');controls.className='price-controls';
+  const candidates=state.dashboard.history_candidates||[];
+  controls.innerHTML=`<div class="price-selector-row"><label for="price-stock">股票走势对照</label><select id="price-stock"><option value="0">仅看账户收益</option>${candidates.map(s=>`<option value="${s.id}" ${s.id===priceStockId?'selected':''}>${esc(s.name)} · ${esc(s.code)}</option>`).join('')}</select><button class="btn btn-sm btn-secondary" id="price-sync">更新该股行情</button></div><p id="price-status" role="status"></p>`;
+  chart.before(controls);
+  $('#price-stock').onchange=e=>{priceStockId=Number(e.target.value);loadPrice();};
+  $('#price-sync').onclick=()=>loadPrice(true);
+  loadPrice();
   const other=state.dashboard.summary.other_pnl_cents;
   if(other) $('.sector-card .side-note').insertAdjacentHTML('beforebegin',`<div class="side-note">账户其他收益 <strong class="${tone(other)}">${money(other,{sign:true})} 元</strong><br>计入账户总收益，单列于行业贡献之外。</div>`);
   const checks=state.dashboard.reconciliation;

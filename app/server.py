@@ -108,6 +108,9 @@ class Handler(BaseHTTPRequestHandler):
                 if write: self.respond({'error':'操作不支持'},405);return
                 self.static_file(path);return
             payload=self.body() if write else {}
+            if path=='/api/stock-history/sync' and self.command=='POST':
+                from .stock_history import sync_stock_history
+                self.respond(sync_stock_history(self.server,payload));return
             with self.server.lock:
                 self.route(path,args,payload)
         except ValidationError as e: self.respond({'error':str(e)},400)
@@ -169,6 +172,9 @@ class Handler(BaseHTTPRequestHandler):
             if not name.startswith('stockfold-') or target.suffix!='.sqlite3' or not target.is_file(): raise ValidationError('备份不存在')
             self.respond(target.read_bytes(),content_type='application/octet-stream',filename=name);return
         with closing(connect(self.server.db_path)) as conn:
+            if path=='/api/stock-history' and method=='GET':
+                from .stock_history import stock_history
+                self.respond(stock_history(conn,int(args.get('stock_id',0)),args.get('start'),args.get('end')));return
             if path=='/api/reconstruction/meta' and method=='GET':
                 opening=opening_state(conn);config=settings(conn)
                 self.respond({'opening':opening,'record_start':config['record_start'],'last_closed_date':last_closed_date(),

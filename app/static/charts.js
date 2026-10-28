@@ -1,4 +1,5 @@
 import {esc,money,icon} from './ui.js';
+import {priceSegments,priceIsolatedPoints,priceBoundaries,heldOn,holdingAreas} from './price-chart.js';
 const UP='#D14343',DOWN='#16845B',FLAT='#94A3B8',CASH='#DCE2ED';
 const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
 export function formatMoney(cents){return money(cents);}
@@ -55,19 +56,27 @@ export function renderCharts(container,dashboard,ui={}){
   function render(){
     const dates=full.slice(view.start,view.end+1),totals=dashboard.total_series.slice(view.start,view.end+1),assets=dashboard.assets.slice(view.start,view.end+1);
     host.replaceChildren();
-    const width=Math.max(host.clientWidth,340),height=380,left=64,right=68,top=34,bottom=height-38,plotWidth=width-left-right,count=dates.length;
-    const svg=node('svg',{viewBox:`0 0 ${width} ${height}`,class:'chart-svg',role:'img','aria-label':'累计收益与账户资产构成合并图，支持滚轮缩放、拖动平移和双击复位'});host.append(svg);
+    const history=ui.priceHistory,offset=history?240:0;
+    const width=Math.max(host.clientWidth,340),height=380+offset,left=64,right=68,top=34+offset,bottom=height-38,plotWidth=width-left-right,count=dates.length;
+    const svg=node('svg',{viewBox:`0 0 ${width} ${height}`,class:'chart-svg',role:'img','aria-label':history?'上方股票收盘价与下方账户总收益对照图，粗线表示持有，竖直虚线表示买入或清仓':'累计收益与账户资产构成合并图，支持滚轮缩放、拖动平移和双击复位'});host.append(svg);
     const defs=add(svg,'defs'),clip=add(defs,'clipPath',{id:uid+'-clip'});add(clip,'rect',{x:left,y:top,width:plotWidth,height:bottom-top});
     const known=totals.map(p=>p.value_cents).filter(v=>v!=null),baseMin=Math.min(0,...known),baseMax=Math.max(100,...known),padding=(baseMax-baseMin)*.1;
     const min=baseMin-padding,max=baseMax+padding,maxAsset=Math.max(100,...assets.map(a=>a.total_assets_cents||0))*1.08;
     const x=i=>left+(count<=1?.5:i/(count-1))*plotWidth,y=v=>top+(max-v)/(max-min)*(bottom-top),ay=v=>bottom-v/maxAsset*(bottom-top);
+    if(history){
+      const background=add(svg,'g',{class:'holding-background','pointer-events':'none'});
+      for(const area of holdingAreas(totals,history.intervals,history.interval_pnl_cents,x,y,34)){
+        add(background,'path',{d:area.points.map(([px,py],i)=>`${i?'L':'M'}${px},${py}`).join(' ')+' Z',
+          fill:area.pnl_cents>0?UP:DOWN,'fill-opacity':.085,class:'holding-area','data-pnl-cents':area.pnl_cents});
+      }
+    }
     for(let i=0;i<=4;i++){
       const ratio=i/4,gy=bottom-ratio*(bottom-top);
       add(svg,'line',{x1:left,y1:gy,x2:width-right,y2:gy,class:'axis-grid'});
       add(svg,'text',{x:left-10,y:gy+3,'text-anchor':'end'},tickMoney(min+ratio*(max-min)));
       add(svg,'text',{x:width-right+10,y:gy+3,'text-anchor':'start',class:'asset-axis-label'},tickMoney(ratio*maxAsset));
     }
-    add(svg,'text',{x:left,y:15,class:'axis-title'},'累计收益 / 元');add(svg,'text',{x:width-right,y:15,'text-anchor':'end',class:'axis-title'},'总资产 / 元');
+    add(svg,'text',{x:left,y:15+offset,class:'axis-title'},'账户累计收益 / 元');add(svg,'text',{x:width-right,y:15+offset,'text-anchor':'end',class:'axis-title'},'总资产 / 元');
     if(min<=0&&max>=0)add(svg,'line',{x1:left,y1:y(0),x2:width-right,y2:y(0),class:'zero-grid'});
     for(const i of new Set([0,Math.floor((count-1)/4),Math.floor((count-1)/2),Math.floor((count-1)*3/4),count-1]))if(dates[i])add(svg,'text',{x:x(i),y:height-12,'text-anchor':'middle',class:'date-label'},dates[i].slice(5).replace('-','/'));
     const plot=add(svg,'g',{'clip-path':`url(#${uid}-clip)`}),barWidth=Math.min(24,Math.max(1,plotWidth/Math.max(count,1)*.58));
@@ -93,6 +102,35 @@ export function renderCharts(container,dashboard,ui={}){
       return `url(#${id})`;
     }
     const indexMap=new Map(dates.map((d,i)=>[d,i]));
+    let pricePoints=[];
+    if(history){
+      pricePoints=history.points.slice(view.start,view.end+1);
+      const values=pricePoints.map(p=>p.close).filter(Number.isFinite),lo=values.length?Math.min(...values):0,hi=values.length?Math.max(...values):1;
+      const pad=Math.max((hi-lo)*.12,hi*.005,.01),priceMin=Math.max(0,lo-pad),priceMax=hi+pad;
+      const py=v=>34+(priceMax-v)/(priceMax-priceMin)*168;
+      add(svg,'text',{x:left,y:15,class:'axis-title'},`${history.stock.name} · 不复权收盘价 / 元`);
+      for(let i=0;i<=4;i++){
+        const value=priceMin+(priceMax-priceMin)*i/4,gy=py(value);
+        add(svg,'line',{x1:left,x2:width-right,y1:gy,y2:gy,class:'axis-grid'});
+        add(svg,'text',{x:left-10,y:gy+3,'text-anchor':'end'},value.toFixed(2));
+      }
+      const priceClip=add(defs,'clipPath',{id:uid+'-price-clip'});
+      add(priceClip,'rect',{x:left-4,y:28,width:plotWidth+8,height:182});
+      const prices=add(svg,'g',{'clip-path':`url(#${uid}-price-clip)`});
+      for(const s of priceSegments(pricePoints,history.intervals))add(prices,'path',{
+        d:`M${x(indexMap.get(s.from.date))},${py(s.from.close)} L${x(indexMap.get(s.to.date))},${py(s.to.close)}`,
+        fill:'none',stroke:'#7665c8','stroke-width':s.held?4:1.5,'stroke-linecap':'round',class:s.held?'price-path held':'price-path'});
+      const dots=new Map(priceIsolatedPoints(pricePoints,history.intervals).map(p=>[p.date,p]));
+      // A same-day round trip has no thick segment, so its close gets a visible dot.
+      for(const p of pricePoints)if(Number.isFinite(p.close)&&history.intervals.some(s=>s.start===p.date&&s.end===p.date))dots.set(p.date,p);
+      for(const p of dots.values())add(prices,'circle',{cx:x(indexMap.get(p.date)),cy:py(p.close),r:heldOn(p.date,history.intervals)?3.5:2,fill:'#7665c8',class:'price-point'});
+      for(const mark of priceBoundaries(history.intervals,dates)){
+        const px=x(indexMap.get(mark.date));
+        const line=add(svg,'line',{x1:px,x2:px,y1:29,y2:bottom,class:'holding-boundary','data-date':mark.date});
+        add(line,'title',{},`${mark.date} ${mark.label}`);
+      }
+      if(!values.length)add(svg,'text',{x:left+plotWidth/2,y:116,'text-anchor':'middle'},'当前范围暂无行情，请更新该股行情');
+    }
     for(const segment of makeLineSegments(totals,assets)){
       const x1=x(indexMap.get(segment.from.date)),y1=y(segment.from.value_cents),x2=x(indexMap.get(segment.to.date)),y2=y(segment.to.value_cents);
       add(plot,'path',{d:`M${x1},${y1} L${x2},${y2}`,fill:'none',stroke:paint(segment.colors,x1,y1,x2,y2),'stroke-width':3,'stroke-linecap':'round',class:'total-path','data-date':segment.to.date});
@@ -100,8 +138,8 @@ export function renderCharts(container,dashboard,ui={}){
     for(const p of isolatedLinePoints(totals)){
       const i=indexMap.get(p.date),px=x(i),py=y(p.value_cents);add(plot,'circle',{cx:px,cy:py,r:3.5,fill:paint(holdingColorShares(assets[i]?.positions),px-3.5,py,px+3.5,py),class:'total-point'});
     }
-    const hover=add(svg,'line',{x1:left,y1:top,x2:left,y2:bottom,class:'hover-line',visibility:'hidden'}),tip=document.createElement('div');tip.className='chart-tooltip hidden';host.append(tip);
-    geometry={svg,tip,hover,width,left,right,top,bottom,x,dates,totals,assets};
+    const hover=add(svg,'line',{x1:left,y1:34,x2:left,y2:bottom,class:'hover-line',visibility:'hidden'}),tip=document.createElement('div');tip.className='chart-tooltip hidden';host.append(tip);
+    geometry={svg,tip,hover,width,left,right,top,bottom,x,dates,totals,assets,pricePoints,history};
     const range=container.querySelector('#chart-window');if(range)range.textContent=count?`${dates[0]} — ${dates.at(-1)} · ${count}天`:'暂无日期';
     if(buttons.inside)buttons.inside.disabled=count<=2;if(buttons.outside)buttons.outside.disabled=count>=full.length;if(buttons.reset)buttons.reset.disabled=count>=full.length;
     const legend=container.querySelector('#holding-legend');
@@ -110,7 +148,7 @@ export function renderCharts(container,dashboard,ui={}){
       const list=[...held.values()];
       legend.innerHTML=`<span class="legend-chip"><i class="legend-solid"></i>总收益折线</span><span class="legend-chip"><i class="legend-dot" style="background:${CASH}"></i>现金</span><span class="legend-chip"><i class="legend-dot" style="background:${UP}"></i>资产柱 · 涨</span><span class="legend-chip"><i class="legend-dot" style="background:${DOWN}"></i>资产柱 · 跌</span><span class="legend-chip"><i class="legend-dot" style="background:${FLAT}"></i>持平 / 待确认</span>${list.map(p=>`<span class="legend-chip" title="${esc(p.code)}"><i class="legend-dot" style="background:${esc(p.color)}"></i>${esc(p.name)}</span>`).join('')}`;
     }
-    if(!dashboard.coverage.has_returns&&!assets.some(a=>a.total_assets_cents!=null)){
+    if(!history&&!dashboard.coverage.has_returns&&!assets.some(a=>a.total_assets_cents!=null)){
       const empty=document.createElement('div');empty.className='chart-empty';empty.innerHTML=`<div class="empty-glyph">${icon('trend')}</div><h3>让第一笔收益，成为曲线的起点</h3><p>导入交易并更新行情后，在同一张图中回看收益和资产。</p><button class="btn btn-sm btn-quiet">更新行情 ${icon('arrow')}</button>`;empty.querySelector('button').onclick=()=>ui.onEmpty?.();host.append(empty);
     }
   }
@@ -123,6 +161,7 @@ export function renderCharts(container,dashboard,ui={}){
     const px=mouse(event).x,index=clamp(Math.round((px-g.left)/(g.width-g.left-g.right)*Math.max(g.dates.length-1,1)),0,g.dates.length-1),total=g.totals[index],asset=g.assets[index],positions=asset?.positions||[];
     g.hover.setAttribute('x1',g.x(index));g.hover.setAttribute('x2',g.x(index));g.hover.setAttribute('visibility','visible');
     let html=`<strong>${esc(g.dates[index])}</strong><div class="tooltip-row"><span>累计收益</span><b>¥ ${money(total?.value_cents,{sign:true})}</b></div><div class="tooltip-row"><span>当日盈亏</span><b>${money(total?.daily_cents,{sign:true})}</b></div><div class="tooltip-rule"></div><div class="tooltip-row"><span>账户总资产</span><b>¥ ${money(asset?.total_assets_cents)}</b></div><div class="tooltip-row"><span>现金余额</span><b>¥ ${money(asset?.cash_cents)}</b></div><div class="tooltip-row"><span>持仓市值</span><b>¥ ${money(asset?.holdings_cents)}</b></div>`;
+    if(g.history){const p=g.pricePoints[index];html+=`<div class="tooltip-rule"></div><div class="tooltip-row"><span>${esc(g.history.stock.name)}收盘价</span><b>${Number.isFinite(p?.close)?'¥ '+p.close.toFixed(2):p?.closed?'休市':'暂无行情'}</b></div><div class="tooltip-path">${heldOn(g.dates[index],g.history.intervals)?'持有期间':'空仓期间'} · ${g.history.uncertain?'持仓依据待核对':'依据已录流水与期初持仓'}</div>`;}
     const colors=holdingColorShares(positions),known=positions.every(p=>p.market_value_cents!=null),shares=new Map(colors.map(c=>[c.stock_id,c.share]));
     if(positions.length){html+='<div class="tooltip-rule"></div>';for(const p of positions)html+=`<div class="tooltip-row"><span><i class="legend-dot" style="background:${esc(p.color)}"></i> ${esc(p.name)}</span><b>${money(p.market_value_cents)}${known?` · ${((shares.get(p.stock_id)||0)*100).toFixed(1)}%`:''}</b></div>`;if(!known)html+='<div class="tooltip-path">持仓或行情待核对，线段暂用中性色。</div>';}
     else html+='<div class="tooltip-path">当日无收盘持仓，线段使用中性色。</div>';

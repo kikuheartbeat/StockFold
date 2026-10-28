@@ -5,6 +5,7 @@ from .records import stock_list,ledger_list
 from .returns import build_returns,dates_between,local_today,pnl_color
 from .holding_curves import holding_curves
 from .holding_values import holding_values
+from .stock_history import history_candidates
 from .validation import ValidationError,valid_date
 
 def build_dashboard(conn,start=None,end=None,industry_level=2):
@@ -100,6 +101,7 @@ def build_dashboard(conn,start=None,end=None,industry_level=2):
                    'latest_asset_date':latest_asset['date'] if latest_asset else None,
                    'stock_count':len(stocks),'record_count':known_count,'ledger_count':len(ledger),'import_count':import_count},
         'dates':dates,'total_series':total,'series':series,'assets':assets,
+        'history_candidates':history_candidates(conn),
         'sectors':sorted(groups.values(),key=lambda g:g['pnl_cents'],reverse=True),
         'coverage':{'complete':not all_missing,'missing_dates':missing,'missing_count':len(all_missing),
                     'confirmed_count':sum(p['status']=='confirmed' for p in total),
